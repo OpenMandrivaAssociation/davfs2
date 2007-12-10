@@ -11,7 +11,6 @@ BuildRoot:	%_tmppath/%name-%version-root
 BuildRequires:	neon-devel = 0.24.7
 
 %description
-
 Davfs is a Linux file system driver that allows you to mount a WebDAV 
 server as a disk drive. WebDAV is an extension to HTTP/1.1 that allows 
 remote collaborative authoring of Web resources, defined in RFC 2518.
