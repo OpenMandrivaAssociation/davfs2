@@ -7,6 +7,7 @@ Group:		System/Kernel and hardware
 
 Source:		http://prdownloads.sourceforge.net/dav/%{name}-%{version}.tar.bz2
 Url:		http://sourceforge.net/projects/dav
+BuildRoot:	%_tmppath/%name-%version-root
 BuildRequires:	neon-devel = 0.24.7
 
 %description
