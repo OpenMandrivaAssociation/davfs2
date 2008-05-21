@@ -1,14 +1,15 @@
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
-Version: 	0.2.8
-Release: 	%mkrel 2
+Version: 	1.3.2
+Release: 	%mkrel 1
 License:	GPL
 Group:		System/Kernel and hardware		
-
-Source:		http://prdownloads.sourceforge.net/dav/%{name}-%{version}.tar.bz2
-Url:		http://sourceforge.net/projects/dav
-BuildRoot:	%_tmppath/%name-%version-root
-BuildRequires:	neon-devel = 0.24.7
+URL:		http://sourceforge.net/projects/dav
+Source0:	http://prdownloads.sourceforge.net/dav/%{name}-%{version}.tar.gz
+Patch0:		davfs2-PROGRAM_NAME.diff
+BuildRequires:	neon-devel >= 0.27
+BuildRequires:	gettext-devel >= 0.14.4
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Davfs is a Linux file system driver that allows you to mount a WebDAV 
@@ -16,41 +17,64 @@ server as a disk drive. WebDAV is an extension to HTTP/1.1 that allows
 remote collaborative authoring of Web resources, defined in RFC 2518.
 
 %prep
-%setup -q
 
-# (sb) name clash with davfs packag, fstype is davfs2
-sed -i 's|mount.davfs|mount.davfs2|g' mount.davfs.8 Makefile.in src/util.c
-sed -i 's|-t davfs|-t davfs2|g' mount.davfs.8 src/util.c
-sed -i 's|DAV_VFS_TYPE "davfs"|DAV_VFS_TYPE "davfs2"|g' src/util.h
-mv mount.davfs.8 mount.davfs2.8
+%setup -q
+%patch0 -p1
 
 %build
-# (sb) use system headers rather than kernel-source
-%configure --with-ssl --with-kernel-src=%{_prefix}
+export PROGRAM_NAME="mount.davfs2"
+
+%configure2_5x \
+    --disable-rpath \
+
 %make
 
 %install
-rm -fr %buildroot
-%makeinstall_std
+rm -fr %{buildroot}
 
 install -d %{buildroot}/sbin
-ln -sf ..%{_sbindir}/mount.%{name} %{buildroot}/sbin/mount.%{name}
-install -d %{buildroot}/var/run/mount.%{name}
+install -d %{buildroot}/var/run/mount.davfs2
+
+%makeinstall_std
+
+# rename the binaries
+mv %{buildroot}%{_sbindir}/mount.davfs %{buildroot}%{_sbindir}/mount.davfs2
+mv %{buildroot}%{_sbindir}/umount.davfs %{buildroot}%{_sbindir}/umount.davfs2
+
+rm -f %{buildroot}/sbin/*
+ln -snf ..%{_sbindir}/mount.davfs2 %{buildroot}/sbin/mount.davfs2
+ln -snf ..%{_sbindir}/umount.davfs2 %{buildroot}/sbin/umount.davfs2
+
+# rename the manpages
+find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
+mv %{buildroot}%{_mandir}/man8/mount.davfs.8 %{buildroot}%{_mandir}/man8/mount.davfs2.8
+mv %{buildroot}%{_mandir}/man8/umount.davfs.8 %{buildroot}%{_mandir}/man8/umount.davfs2.8
+mv %{buildroot}%{_mandir}/de/man8/mount.davfs.8 %{buildroot}%{_mandir}/de/man8/mount.davfs2.8
+mv %{buildroot}%{_mandir}/de/man8/umount.davfs.8 %{buildroot}%{_mandir}/de/man8/umount.davfs2.8
 
 # (sb) handled by %%doc
-rm -fr $RPM_BUILD_ROOT%{_datadir}/%{name}
+rm -fr %{buildroot}%{_datadir}/%{name}
+
+%find_lang %{name} --all-name
 
 %clean
-rm -fr %buildroot
+rm -fr %{buildroot}
 
-%files
+%files -f %{name}.lang
 %defattr(-,root,root)
-%doc README COPYING NEWS FAQ TODO THANKS ChangeLog secrets.template %{name}.conf.template
+%doc README COPYING NEWS FAQ TODO THANKS ChangeLog
 %dir %{_sysconfdir}/%{name}
+%dir %{_sysconfdir}/%{name}/certs
+%dir %{_sysconfdir}/%{name}/certs/private
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/%{name}/secrets
-%{_sbindir}/mount.%{name}
-/sbin/mount.%{name}
+%{_sbindir}/mount.davfs2
+%{_sbindir}/umount.davfs2
+/sbin/mount.davfs2
+/sbin/umount.davfs2
+%{_mandir}/man5/*
 %{_mandir}/man8/*
+%lang(de) %{_mandir}/de/man5/*
+%lang(de) %{_mandir}/de/man8/*
+%lang(es) %{_mandir}/es/man5/*
 %attr(1775,root,users) %dir /var/run/mount.%{name}
-
