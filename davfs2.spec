@@ -7,13 +7,14 @@
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
 Version: 	1.3.3
-Release: 	%mkrel 1
+Release: 	%mkrel 2
 License:	GPLv2+
 Group:		System/Kernel and hardware		
 URL:		http://sourceforge.net/projects/dav
 Source0:	http://prdownloads.sourceforge.net/dav/%{name}-%{version}.tar.gz
 Patch0:		davfs2-PROGRAM_NAME.diff
 Patch1:		davfs2-glibc27.diff
+Patch2:		davfs2-1.3.3-format_not_a_string_literal_and_no_format_arguments.diff
 Requires(pre): rpm-helper
 Requires(postun): rpm-helper
 BuildRequires:	neon-devel >= 0.27
@@ -44,6 +45,7 @@ davfs2 allows you to e.g.
 %setup -q
 %patch0 -p1
 %patch1 -p0
+%patch2 -p1 -b .format_not_a_string_literal_and_no_format_arguments
 
 %build
 libtoolize --copy --force; aclocal -I config; autoheader; automake --add-missing --force-missing; autoheader; autoconf
