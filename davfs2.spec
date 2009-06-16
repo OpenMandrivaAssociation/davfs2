@@ -1,4 +1,3 @@
-%define PROGRAM_NAME mount.%{name}
 %define dav_user %{name}
 %define dav_group %{name}
 %define dav_localstatedir /var/run
@@ -6,20 +5,20 @@
 
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
-Version: 	1.3.3
-Release: 	%mkrel 2
+Version: 	1.4.1
+Release: 	%mkrel 1
 License:	GPLv2+
 Group:		System/Kernel and hardware		
 URL:		http://sourceforge.net/projects/dav
 Source0:	http://prdownloads.sourceforge.net/dav/%{name}-%{version}.tar.gz
-Patch0:		davfs2-PROGRAM_NAME.diff
-Patch1:		davfs2-glibc27.diff
-Patch2:		davfs2-1.3.3-format_not_a_string_literal_and_no_format_arguments.diff
+Patch2:		davfs2-1.4.0-format_not_a_string_literal_and_no_format_arguments.diff
 Requires(pre): rpm-helper
 Requires(postun): rpm-helper
 BuildRequires:	neon-devel >= 0.27
 BuildRequires:	gettext-devel >= 0.14.4
 BuildRequires:	libtool
+Provides:	davfs = %{version}-%{release}
+Obsoletes:	davfs < 0.2.5
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -43,14 +42,11 @@ davfs2 allows you to e.g.
 %prep
 
 %setup -q
-%patch0 -p1
-%patch1 -p0
-%patch2 -p1 -b .format_not_a_string_literal_and_no_format_arguments
+%patch2 -p1 -b .fmt
 
 %build
 libtoolize --copy --force; aclocal -I config; autoheader; automake --add-missing --force-missing; autoheader; autoconf
 
-export PROGRAM_NAME=%{PROGRAM_NAME}
 export dav_user=%{dav_user}
 export dav_group=%{dav_group}
 export dav_localstatedir=%{dav_localstatedir}
@@ -72,8 +68,8 @@ install -d %{buildroot}%{_datadir}/%{name}
 %makeinstall_std
 
 # rename the binaries
-mv %{buildroot}%{_sbindir}/mount.davfs %{buildroot}%{_sbindir}/mount.%{name}
-mv %{buildroot}%{_sbindir}/umount.davfs %{buildroot}%{_sbindir}/umount.%{name}
+ln -s %{_sbindir}/mount.davfs %{buildroot}%{_sbindir}/mount.%{name}
+ln -s %{_sbindir}/umount.davfs %{buildroot}%{_sbindir}/umount.%{name}
 
 rm -f %{buildroot}/sbin/*
 ln -snf ..%{_sbindir}/mount.%{name} %{buildroot}/sbin/mount.%{name}
@@ -81,10 +77,6 @@ ln -snf ..%{_sbindir}/umount.%{name} %{buildroot}/sbin/umount.%{name}
 
 # rename the manpages
 find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
-mv %{buildroot}%{_mandir}/man8/mount.davfs.8 %{buildroot}%{_mandir}/man8/mount.%{name}.8
-mv %{buildroot}%{_mandir}/man8/umount.davfs.8 %{buildroot}%{_mandir}/man8/umount.%{name}.8
-mv %{buildroot}%{_mandir}/de/man8/mount.davfs.8 %{buildroot}%{_mandir}/de/man8/mount.%{name}.8
-mv %{buildroot}%{_mandir}/de/man8/umount.davfs.8 %{buildroot}%{_mandir}/de/man8/umount.%{name}.8
 
 %find_lang %{name} --all-name
 
@@ -99,16 +91,16 @@ rm -fr %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%doc AUTHORS COPYING FAQ INSTALL.davfs2 NEWS README THANKS
+%doc AUTHORS COPYING FAQ NEWS README THANKS
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/certs
 %dir %{_sysconfdir}/%{name}/certs/private
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/%{name}/secrets
-%{_sbindir}/mount.%{name}
-%{_sbindir}/umount.%{name}
-/sbin/mount.%{name}
-/sbin/umount.%{name}
+%{_sbindir}/mount.davfs*
+%{_sbindir}/umount.davfs*
+/sbin/mount.davfs*
+/sbin/umount.davfs*
 %{_mandir}/man5/*
 %{_mandir}/man8/*
 %lang(de) %{_mandir}/de/man5/*
