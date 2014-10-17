@@ -1,12 +1,12 @@
 %define dav_user %{name}
 %define dav_group %{name}
-%define dav_localstatedir /var/run
-%define dav_syscachedir /var/cache
+%define dav_localstatedir %{_rundir}
+%define dav_syscachedir %{_var}/cache
 
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
-Version: 	1.4.7
-Release: 	7
+Version:	1.5.2
+Release:	1
 License:	GPLv2+
 Group:		System/Kernel and hardware		
 Url:		http://savannah.nongnu.org/projects/davfs2
@@ -45,7 +45,7 @@ export dav_group=%{dav_group}
 export dav_localstatedir=%{dav_localstatedir}
 export dav_syscachedir=%{dav_syscachedir}
 
-%configure2_5x
+%configure
 
 %make
 
