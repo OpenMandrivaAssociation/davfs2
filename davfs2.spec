@@ -6,7 +6,7 @@
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
 Version:	1.5.4
-Release:	1
+Release:	2
 License:	GPLv2+
 Group:		System/Kernel and hardware		
 Url:		http://savannah.nongnu.org/projects/davfs2
@@ -15,7 +15,6 @@ Source0:	http://ftp.twaren.net/Unix/NonGNU/%{name}/%{name}-%{version}.tar.gz
 BuildRequires:	libtool
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(neon)
-Requires(pre,postun):	strace
 Requires(pre,postun):	rpm-helper
 Provides:	davfs = %{version}-%{release}
 
@@ -72,7 +71,7 @@ find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
 %find_lang %{name} --all-name
 
 %pre
-strace -s 65535 -f %_pre_useradd %{dav_user} %{dav_localstatedir}/mount.%{name} /bin/false
+%_pre_useradd %{dav_user} %{dav_localstatedir}/mount.%{name} /bin/false
 
 %postun
 %_postun_userdel %{dav_user}
