@@ -5,8 +5,8 @@
 
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
-Version:	1.5.2
-Release:	7
+Version:	1.5.4
+Release:	1
 License:	GPLv2+
 Group:		System/Kernel and hardware		
 Url:		http://savannah.nongnu.org/projects/davfs2
@@ -79,6 +79,11 @@ strace -s 65535 -f %_pre_useradd %{dav_user} %{dav_localstatedir}/mount.%{name} 
 
 %files -f %{name}.lang
 %doc AUTHORS COPYING FAQ NEWS README THANKS
+%doc %{_docdir}/%{name}/BUGS
+%doc %{_docdir}/%{name}/ChangeLog
+%doc %{_docdir}/%{name}/INSTALL
+%doc %{_docdir}/%{name}/README.translators
+%doc %{_docdir}/%{name}/TODO
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/certs
 %dir %{_sysconfdir}/%{name}/certs/private
