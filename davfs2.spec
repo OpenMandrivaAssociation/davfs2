@@ -5,7 +5,7 @@
 
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
-Version:	1.6.0
+Version:	1.6.1
 Release:	1
 License:	GPLv2+
 Group:		System/Kernel and hardware		
