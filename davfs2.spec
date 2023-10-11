@@ -6,7 +6,7 @@
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
 Version:	1.7.0
-Release:	2
+Release:	3
 License:	GPLv2+
 Group:		System/Kernel and hardware		
 Url:		http://savannah.nongnu.org/projects/davfs2
@@ -38,7 +38,7 @@ davfs2 allows you to e.g.
 
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
 export dav_user=%{dav_user}
@@ -59,12 +59,8 @@ install -d %{buildroot}%{_datadir}/%{name}
 %makeinstall_std
 
 # rename the binaries
-ln -s %{_sbindir}/mount.davfs %{buildroot}%{_sbindir}/mount.%{name}
-ln -s %{_sbindir}/umount.davfs %{buildroot}%{_sbindir}/umount.%{name}
-
-rm -f %{buildroot}/sbin/*
-ln -snf ..%{_sbindir}/mount.%{name} %{buildroot}/sbin/mount.%{name}
-ln -snf ..%{_sbindir}/umount.%{name} %{buildroot}/sbin/umount.%{name}
+ln -s mount.davfs %{buildroot}%{_sbindir}/mount.%{name}
+ln -s umount.davfs %{buildroot}%{_sbindir}/umount.%{name}
 
 # rename the manpages
 find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
@@ -91,8 +87,6 @@ find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
 %config(noreplace) %{_sysconfdir}/%{name}/secrets
 %{_sbindir}/mount.davfs*
 %{_sbindir}/umount.davfs*
-/sbin/mount.davfs*
-/sbin/umount.davfs*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*
 %{_mandir}/man5/*
@@ -102,4 +96,3 @@ find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
 %lang(es) %{_mandir}/es/man5/*
 %attr(1775,root,%{dav_group}) %dir %{dav_localstatedir}/mount.%{name}
 %attr(1775,root,%{dav_group}) %dir %{dav_syscachedir}/%{name}
-
