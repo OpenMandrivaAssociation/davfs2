@@ -9,7 +9,7 @@ Version:	1.7.0
 Release:	3
 License:	GPLv2+
 Group:		System/Kernel and hardware		
-Url:		http://savannah.nongnu.org/projects/davfs2
+Url:		https://savannah.nongnu.org/projects/davfs2
 Source0:	http://ftp.twaren.net/Unix/NonGNU/%{name}/%{name}-%{version}.tar.gz
 
 BuildRequires:	libtool
