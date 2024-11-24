@@ -48,7 +48,7 @@ export dav_syscachedir=%{dav_syscachedir}
 
 %configure
 
-%make
+%make_build
 
 %install
 install -d %{buildroot}/sbin
@@ -56,7 +56,7 @@ install -d %{buildroot}%{dav_localstatedir}/mount.%{name}
 install -d %{buildroot}%{dav_syscachedir}/%{name}
 install -d %{buildroot}%{_datadir}/%{name}
 
-%makeinstall_std
+%make_install
 
 # rename the binaries
 ln -s mount.davfs %{buildroot}%{_sbindir}/mount.%{name}
@@ -67,11 +67,11 @@ find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
 
 %find_lang %{name} --all-name
 
-%pre
-%_pre_useradd %{dav_user} %{dav_localstatedir}/mount.%{name} /bin/false
-
-%postun
-%_postun_userdel %{dav_user}
+mkdir -p %{buildroot}%{_sysusersdir}
+cat >%{buildroot}%{_sysusersdir}/%{name}.conf <<EOF
+g %{dav_group}
+u %{dav_user} - "WebDAV Filesystem" %{dav_localstatedir}/mount.%{name} %{_bindir}/false
+EOF
 
 %files -f %{name}.lang
 %doc README.md AUTHORS COPYING FAQ NEWS THANKS
@@ -96,3 +96,4 @@ find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
 %lang(es) %{_mandir}/es/man5/*
 %attr(1775,root,%{dav_group}) %dir %{dav_localstatedir}/mount.%{name}
 %attr(1775,root,%{dav_group}) %dir %{dav_syscachedir}/%{name}
+%{_sysusersdir}/%{name}.conf
