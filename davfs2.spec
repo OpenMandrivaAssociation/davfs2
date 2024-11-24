@@ -5,12 +5,12 @@
 
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
-Version:	1.7.0
-Release:	3
+Version:	1.7.1
+Release:	1
 License:	GPLv2+
 Group:		System/Kernel and hardware		
 Url:		https://savannah.nongnu.org/projects/davfs2
-Source0:	http://ftp.twaren.net/Unix/NonGNU/%{name}/%{name}-%{version}.tar.gz
+Source0:	https://download-mirror.savannah.gnu.org/releases/davfs2/davfs2-%{version}.tar.gz
 
 BuildRequires:	libtool
 BuildRequires:	gettext-devel
@@ -74,7 +74,7 @@ find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
 %_postun_userdel %{dav_user}
 
 %files -f %{name}.lang
-%doc AUTHORS COPYING FAQ NEWS README THANKS
+%doc README.md AUTHORS COPYING FAQ NEWS THANKS
 %doc %{_docdir}/%{name}/BUGS
 %doc %{_docdir}/%{name}/ChangeLog
 %doc %{_docdir}/%{name}/INSTALL
