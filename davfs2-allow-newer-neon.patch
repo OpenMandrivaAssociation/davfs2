@@ -1,0 +1,12 @@
+diff -up davfs2-1.7.1/configure.ac.omv~ davfs2-1.7.1/configure.ac
+--- davfs2-1.7.1/configure.ac.omv~	2024-11-24 16:04:09.308739540 +0100
++++ davfs2-1.7.1/configure.ac	2024-11-24 16:04:20.378851750 +0100
+@@ -37,7 +37,7 @@ AC_PROG_LN_S
+ # Checks for libraries.
+ AM_GNU_GETTEXT_VERSION(0.19.8)
+ AM_GNU_GETTEXT([external])
+-NE_REQUIRE_VERSIONS([0], [27 28 29 30 31 32 33])
++NE_REQUIRE_VERSIONS([0], [27 28 29 30 31 32 33 34 35 36 37 38 39 40])
+ DAV_CHECK_NEON
+ 
+ # Checks for header files.

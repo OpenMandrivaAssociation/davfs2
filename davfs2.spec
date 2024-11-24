@@ -11,12 +11,11 @@ License:	GPLv2+
 Group:		System/Kernel and hardware		
 Url:		https://savannah.nongnu.org/projects/davfs2
 Source0:	https://download-mirror.savannah.gnu.org/releases/davfs2/davfs2-%{version}.tar.gz
+Patch0:		davfs2-allow-newer-neon.patch
 
 BuildRequires:	libtool
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(neon)
-BuildRequires:	rpm-helper
-Requires(pre,postun):	rpm-helper
 Provides:	davfs = %{version}-%{release}
 
 %description
