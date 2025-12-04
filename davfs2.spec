@@ -5,7 +5,7 @@
 
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
-Version:	1.7.1
+Version:	1.7.2
 Release:	1
 License:	GPLv2+
 Group:		System/Kernel and hardware		
@@ -60,9 +60,6 @@ install -d %{buildroot}%{_datadir}/%{name}
 # rename the binaries
 ln -s mount.davfs %{buildroot}%{_sbindir}/mount.%{name}
 ln -s umount.davfs %{buildroot}%{_sbindir}/umount.%{name}
-
-# rename the manpages
-find %{buildroot}%{_mandir} -name "*.gz" | xargs gunzip
 
 %find_lang %{name} --all-name
 
