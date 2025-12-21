@@ -13,6 +13,11 @@ Url:		https://savannah.nongnu.org/projects/davfs2
 Source0:	https://download-mirror.savannah.gnu.org/releases/davfs2/davfs2-%{version}.tar.gz
 Patch0:		davfs2-allow-newer-neon.patch
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	libtool
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(neon)
