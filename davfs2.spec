@@ -5,13 +5,13 @@
 
 Summary:	File system driver that allows you to mount a WebDAV server
 Name:		davfs2
-Version:	1.7.2
+Version:	1.7.3
 Release:	1
 License:	GPLv2+
 Group:		System/Kernel and hardware		
 Url:		https://savannah.nongnu.org/projects/davfs2
 Source0:	https://download-mirror.savannah.gnu.org/releases/davfs2/davfs2-%{version}.tar.gz
-Patch0:		davfs2-allow-newer-neon.patch
+# dropped (no longer applies): Patch0:		davfs2-allow-newer-neon.patch
 
 BuildRequires:	autoconf
 BuildRequires:	automake
